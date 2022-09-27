@@ -7,16 +7,14 @@ public class Move {
     public static int speed = 1;
 
     public static void down(Animal animal) {
-        if (animal.getY() % 32 == 0 && animal.getX() % 32 == 0) {
             if (animal instanceof Bomber) {
                 animal.setDirection("down");
                 animal.setCount(4 / speed);
                 checkRun(animal);
             }
-        }
     }
     private static void down_step(Animal animal) {
-        if (animal instanceof  Bomber && animal.getY() % 8 == 0) {
+        if (animal instanceof  Bomber) {
             if (animal.getSwap() == 1) {
                 animal.setImg(Sprite.move_down.getFxImage());
                 animal.setSwap(2);
@@ -34,16 +32,14 @@ public class Move {
     }
 
     public static void up(Animal animal) {
-        if (animal.getY() % 32 == 0 && animal.getX() % 32 == 0) {
             if (animal instanceof Bomber) {
                 animal.setDirection("up");
                 animal.setCount(4 / speed);
                 checkRun(animal);
             }
-        }
     }
     private static void up_step(Animal animal) {
-        if (animal instanceof  Bomber && animal.getY() % 8 == 0) {
+        if (animal instanceof  Bomber) {
             if (animal.getSwap() == 1) {
                 animal.setImg(Sprite.move_up.getFxImage());
                 animal.setSwap(2);
@@ -61,16 +57,14 @@ public class Move {
     }
 
     public static void left(Animal animal) {
-        if (animal.getX() % 32 == 0 && animal.getY() % 32 == 0) {
             if (animal instanceof Bomber) {
                 animal.setDirection("left");
                 animal.setCount(4 / speed);
                 checkRun(animal);
             }
-        }
     }
     private static void left_step(Animal animal) {
-        if (animal instanceof  Bomber && animal.getX() % 8 == 0) {
+        if (animal instanceof  Bomber) {
             if (animal.getSwap() == 1) {
                 animal.setImg(Sprite.move_left.getFxImage());
                 animal.setSwap(2);
@@ -88,16 +82,14 @@ public class Move {
     }
 
     public static void right(Animal animal) {
-        if (animal.getX() % 32 == 0 && animal.getY() % 32 == 0) {
             if (animal instanceof Bomber) {
                 animal.setDirection("right");
                 animal.setCount(4 / speed);
                 checkRun(animal);
             }
-        }
     }
     private static void right_step(Animal animal) {
-        if (animal instanceof  Bomber && animal.getX() % 8 == 0) {
+        if (animal instanceof  Bomber) {
             if (animal.getSwap() == 1) {
                 animal.setImg(Sprite.move_right.getFxImage());
                 animal.setSwap(2);
