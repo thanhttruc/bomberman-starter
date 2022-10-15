@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.explosion.Explosion;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.utils.FileUtils;
 
@@ -31,6 +32,11 @@ public class BombermanGame extends Application {
     public static int [][] checkWall = new int[WIDTH][HEIGHT];
     public static final List<Entity> block = new ArrayList<>(); // chứa bomb
 
+    static BombermanGame instance;
+
+    public static BombermanGame getInstance() {
+        return instance;
+    }
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -38,6 +44,7 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
+        instance = this;
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -136,8 +143,10 @@ public class BombermanGame extends Application {
                         stillObjects.add(grass);
                         entities.add(entity);
                     }
-                    else
-                   stillObjects.add(entity);
+                    else if (entity instanceof Brick) {
+                        stillObjects.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                    }
+                    stillObjects.add(entity);
                 }
                 System.out.println();
             }
@@ -153,6 +162,20 @@ public class BombermanGame extends Application {
             if (ett instanceof Bomb) {
                 if (((Bomb) ett).isAlive()) ett.update();
                 else {
+                    //check explosion
+                    for (int j = ((Bomb) ett).getExplosionList().size() - 1; j >= 0; j--) {
+                        Explosion explosion = ((Bomb) ett).getExplosionList().get(j);
+                        //check brick
+                        for (Entity e : stillObjects) {
+                            if (e.getXBlock() == explosion.getXBlock() && e.getYBlock() == explosion.getYBlock()) {
+                                if (e instanceof Brick) {
+                                    stillObjects.remove(e);
+                                    break;
+                                }
+                            }
+                        }
+                        block.remove(explosion);
+                    }
                     block.remove(ett);
                     i--;
                 }
@@ -198,4 +221,27 @@ public class BombermanGame extends Application {
         oneal.render(gc);
     }
 
+    public List<Entity> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(List<Entity> entities) {
+        this.entities = entities;
+    }
+
+    public List<Entity> getStillObjects() {
+        return stillObjects;
+    }
+
+    public void setStillObjects(List<Entity> stillObjects) {
+        this.stillObjects = stillObjects;
+    }
+
+    public static List<Animal> getEntity() {
+        return entity;
+    }
+
+    public static void setEntity(List<Animal> entity) {
+        BombermanGame.entity = entity;
+    }
 }

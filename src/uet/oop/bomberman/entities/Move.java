@@ -13,7 +13,9 @@ public class Move {
     public static boolean can_down(Entity entity) {
         can_move = true;
         // getY + 1 để dừng ngay từ pos trên, không đi vào ô chứa wall
-        if (checkWall[entity.getX()/32][entity.getY()/32 + 1] == 0)
+        int code = checkWall[entity.getX()/32][entity.getY()/32 + 1];
+
+        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK)
         {
             can_move = false;
         }
@@ -21,7 +23,8 @@ public class Move {
     }
     public static boolean can_up(Entity entity) {
         can_move = true;
-        if (checkWall[entity.getX()/32][entity.getY()/32 - 1] == 0)
+        int code = checkWall[entity.getX()/32][entity.getY()/32 - 1];
+        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK)
         {
             can_move = false;
         }
@@ -29,7 +32,8 @@ public class Move {
     }
     public static boolean can_right(Entity entity) {
         can_move = true;
-        if (checkWall[entity.getX()/32 + 1][entity.getY()/32] == 0)
+        int code = checkWall[entity.getX()/32 + 1][entity.getY()/32];
+        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK)
         {
             can_move = false;
         }
@@ -37,7 +41,8 @@ public class Move {
     }
     public static boolean can_left(Entity entity) {
         can_move = true;
-        if (checkWall[entity.getX()/32 - 1][entity.getY()/32] == 0)
+        int code = checkWall[entity.getX()/32 - 1][entity.getY()/32];
+        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK)
         {
             can_move = false;
         }
@@ -346,7 +351,20 @@ public class Move {
     public static void checkRun(Animal animal) {
         if (animal instanceof Bomber && animal.getCount() > 0) {
             setDirection(animal.getDirection(), animal, 8 * speed);
-            animal.setCount(animal.getCount() - 1);
+
+//            int x = animal.getXBlock();
+//            int y = animal.getYBlock();
+//            int [][] map = checkWall;
+//            int nextBlock;
+//            switch (animal.direction) {
+//                case "up": nextBlock = map[x-1][y];
+//                case "down" : nextBlock = map[x+1][y];
+//                case "right": nextBlock = map[x][y+1];
+//                case "left": nextBlock = map[x][y-1];
+//                default: nextBlock = -1;
+//            }
+//            if (nextBlock != Sprite.CODE_ID_WALL && nextBlock != Sprite.CODE_ID_BRICK)
+                animal.setCount(animal.getCount() - 1);
         }
         //run entity
         if (animal instanceof Balloom && animal.getCount() > 0) {
