@@ -19,17 +19,9 @@ public class BombermanGame extends Application {
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
 
-<<<<<<< HEAD
     public static Animal bomber;
     public static Animal balloom;
     public static Animal oneal;
-
-=======
-    public static Animal balloom;
-    public static Animal oneal;
-
-    public static Animal bomber;
->>>>>>> bdf43620933663f46bf74138b2cb54ea27c2fe79
     private GraphicsContext gc;
     private Canvas canvas;
 
@@ -37,10 +29,6 @@ public class BombermanGame extends Application {
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
     public static int [][] checkWall = new int[WIDTH][HEIGHT];
-<<<<<<< HEAD
-=======
-    public static List<Animal> entity = new ArrayList<>();
->>>>>>> bdf43620933663f46bf74138b2cb54ea27c2fe79
     public static final List<Entity> block = new ArrayList<>(); // chứa bomb
 
 
@@ -88,11 +76,7 @@ public class BombermanGame extends Application {
 
         // init bomber
         bomber = new Bomber(1, 1, Sprite.player_right.getFxImage());
-<<<<<<< HEAD
-=======
         entities.add(bomber);
-
->>>>>>> bdf43620933663f46bf74138b2cb54ea27c2fe79
         balloom = new Balloom(5, 5, Sprite.balloom_right1.getFxImage());
         oneal = new Oneal(10, 10, Sprite.oneal_right1.getFxImage());
         entity.add(balloom);
@@ -108,19 +92,6 @@ public class BombermanGame extends Application {
         timer.start();
 
         createMap();
-<<<<<<< HEAD
-=======
-
-//        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-//        entities.add(bomberman);
-
-        Entity balloomleft1 = new Balloom(1, 10, Sprite.balloom_left1.getFxImage());
-        entities.add(balloomleft1);
-        Entity balloomleft2 = new Balloom(1, 5, Sprite.balloom_left2.getFxImage());
-        entities.add(balloomleft2);
-        Entity balloom = new Balloom(1, 10, Sprite.balloom_left1.getFxImage());
-        entities.add(balloom);
->>>>>>> bdf43620933663f46bf74138b2cb54ea27c2fe79
     }
 
     public void createMap() {
@@ -177,17 +148,20 @@ public class BombermanGame extends Application {
         for (Entity ett : entities) {
             ett.update();
         }
-        for (Entity ett: block) {
-            ett.update();
+        for (int i = 0; i < block.size(); i++) {
+            Entity ett = block.get(i);
+            if (ett instanceof Bomb) {
+                if (((Bomb) ett).isAlive()) ett.update();
+                else {
+                    block.remove(ett);
+                    i--;
+                }
+            }
+            else ett.update();
         }
         for (Entity ett: entity) {
             ett.update();
         }
-
-<<<<<<< HEAD
-=======
-
->>>>>>> bdf43620933663f46bf74138b2cb54ea27c2fe79
         //update bomber
         bomber.update();
         balloom.update();
