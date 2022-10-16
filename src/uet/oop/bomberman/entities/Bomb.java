@@ -103,10 +103,13 @@ public class Bomb extends Entity {
             y = topExplosion.getYBlock();
             if (map_flame[x][y] != Sprite.CODE_ID_WALL) {
                 explosionList.add(topExplosion);
-                int temp = 0;
+                int temp = 0, temp1 = 0, temp2 = 0;
                 while (temp < 1) {
                     map_flame[x][y] = 5;
                     map_flame[tempx][tempy] = 5;
+                    temp1 = tempx;
+                    temp2 = tempy;
+
                     try {
                         Thread.sleep(15);
                     } catch (InterruptedException e) {
@@ -115,17 +118,20 @@ public class Bomb extends Entity {
                     temp++;
                 }
                 map_flame[x][y] = Sprite.CODE_ID_GRASS;
-                map_flame[tempx][tempy] = Sprite.CODE_ID_GRASS;
+                map_flame[temp1][temp2] = Sprite.CODE_ID_GRASS;
             }
 
             x = downExplosion.getXBlock();
             y = downExplosion.getYBlock();
             if (map_flame[x][y] != Sprite.CODE_ID_WALL) {
                 explosionList.add(downExplosion);
-                int temp = 0;
+                int temp = 0, temp1 = 0, temp2 = 0;
                 while (temp < 1) {
                     map_flame[x][y] = 5;
                     map_flame[tempx][tempy] = 5;
+                    temp1 = tempx;
+                    temp2 = tempy;
+
                     try {
                         Thread.sleep(15);
                     } catch (InterruptedException e) {
@@ -134,17 +140,20 @@ public class Bomb extends Entity {
                     temp++;
                 }
                 map_flame[x][y] = Sprite.CODE_ID_GRASS;
-                map_flame[tempx][tempy] = Sprite.CODE_ID_GRASS;
+                map_flame[temp1][temp2] = Sprite.CODE_ID_GRASS;
             }
 
             x = rightExplosion.getXBlock();
             y = rightExplosion.getYBlock();
             if (map_flame[x][y] != Sprite.CODE_ID_WALL) {
                 explosionList.add(rightExplosion);
-                int temp = 0;
+                int temp = 0, temp1 = 0, temp2 = 0;
                 while (temp < 1) {
                     map_flame[x][y] = 5;
                     map_flame[tempx][tempy] = 5;
+                    temp1 = tempx;
+                    temp2 = tempy;
+
                     try {
                         Thread.sleep(15);
                     } catch (InterruptedException e) {
@@ -153,17 +162,20 @@ public class Bomb extends Entity {
                     temp++;
                 }
                 map_flame[x][y] = Sprite.CODE_ID_GRASS;
-                map_flame[tempx][tempy] = Sprite.CODE_ID_GRASS;
+                map_flame[temp1][temp2] = Sprite.CODE_ID_GRASS;
             }
 
             x = leftExplosion.getXBlock();
             y = leftExplosion.getYBlock();
             if (map_flame[x][y] != Sprite.CODE_ID_WALL) {
                 explosionList.add(leftExplosion);
-                int temp = 0;
+                int temp = 0, temp1 = 0, temp2 = 0;
                 while (temp < 1) {
                     map_flame[x][y] = 5;
                     map_flame[tempx][tempy] = 5;
+                    temp1 = tempx;
+                    temp2 = tempy;
+
                     try {
                         Thread.sleep(15);
                     } catch (InterruptedException e) {
@@ -172,7 +184,7 @@ public class Bomb extends Entity {
                     temp++;
                 }
                 map_flame[x][y] = Sprite.CODE_ID_GRASS;
-                map_flame[tempx][tempy] = Sprite.CODE_ID_GRASS;
+                map_flame[temp1][temp2] = Sprite.CODE_ID_GRASS;
             }
             index++;
         }

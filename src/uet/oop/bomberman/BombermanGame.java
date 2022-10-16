@@ -198,18 +198,17 @@ public class BombermanGame extends Application {
             } else ett.update();
         }
 
-        for (Entity ett: entity) {
-            ett.update();
-        }
-
         //update items
         speedItem.update();
         flameItem.update();
         bombItem.update();
         //update bomber
         bomber.update();
-        balloom.update();
-        oneal.update();
+//        balloom.update();
+//        oneal.update();
+        for (Entity ett: entity) {
+            ett.update();
+        }
 
 
         bomber.setCountToRun(bomber.getCountToRun() + 1);

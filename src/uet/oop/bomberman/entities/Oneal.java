@@ -35,7 +35,7 @@ public class Oneal extends Animal {
                 swap_img = 5;
             } else {
                 animal.setImg(Sprite.transparent.getFxImage());
-                entity.remove(oneal);
+                //entity.remove(oneal);
                 //swap_img = 1;
             }
         }

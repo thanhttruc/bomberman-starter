@@ -37,7 +37,7 @@ public class Balloom extends Animal {
                 swap_img = 5;
             } else {
                 animal.setImg(Sprite.transparent.getFxImage());
-                entity.remove(balloom);
+                //entity.remove(balloom);
                 //swap_img = 1;
             }
         }
