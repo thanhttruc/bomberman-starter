@@ -9,6 +9,8 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.entities.Bomb.bomb_number;
+import static uet.oop.bomberman.entities.Bomb.map_flame;
 
 public class Bomber extends Animal {
     public static int swap_img = 1;
@@ -39,6 +41,13 @@ public class Bomber extends Animal {
         }
     }
 
+    private void checkBomb() {
+        int ax = bomber.getX() / 32;
+        int ay = bomber.getY() / 32;
+        if (map_flame[ax][ay] == 5) {
+            bomber.life = false;
+        }
+    }
     private void checkEnemy() {
         int ax = bomber.getX() / 32;
         int ay = bomber.getY() / 32;
@@ -55,6 +64,7 @@ public class Bomber extends Animal {
     @Override
     public void update() {
         checkEnemy();
+        checkBomb();
         delay_swap++;
         if (!bomber.life) {
             Bomber_dead(bomber);
