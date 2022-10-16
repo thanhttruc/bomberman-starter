@@ -3,7 +3,7 @@ package uet.oop.bomberman.entities.explosion;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.Entity;
 
-public abstract class Explosion extends Entity {
+public class Explosion extends Entity {
 
     int animate = 0;
     int time = 34;

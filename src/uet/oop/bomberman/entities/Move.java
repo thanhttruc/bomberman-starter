@@ -2,21 +2,19 @@ package uet.oop.bomberman.entities;
 
 import uet.oop.bomberman.graphics.Sprite;
 
-import static uet.oop.bomberman.BombermanGame.checkWall;
+import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.entities.SpeedItem.speed;
 
 
 public class Move {
-    // chua xu li toc do khi bomber nhan duoc item buff
-    public static int speed = 1;
+
     public static boolean can_move = true;
 
     public static boolean can_down(Entity entity) {
         can_move = true;
-        // getY + 1 để dừng ngay từ pos trên, không đi vào ô chứa wall
         int code = checkWall[entity.getX()/32][entity.getY()/32 + 1];
 
-        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK)
-        {
+        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK || code == Sprite.CODE_ID_BOOM) {
             can_move = false;
         }
         return can_move;
@@ -24,8 +22,7 @@ public class Move {
     public static boolean can_up(Entity entity) {
         can_move = true;
         int code = checkWall[entity.getX()/32][entity.getY()/32 - 1];
-        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK)
-        {
+        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK || code == Sprite.CODE_ID_BOOM)  {
             can_move = false;
         }
         return can_move;
@@ -33,8 +30,7 @@ public class Move {
     public static boolean can_right(Entity entity) {
         can_move = true;
         int code = checkWall[entity.getX()/32 + 1][entity.getY()/32];
-        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK)
-        {
+        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK || code == Sprite.CODE_ID_BOOM) {
             can_move = false;
         }
         return can_move;
@@ -42,7 +38,7 @@ public class Move {
     public static boolean can_left(Entity entity) {
         can_move = true;
         int code = checkWall[entity.getX()/32 - 1][entity.getY()/32];
-        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK)
+        if (code == Sprite.CODE_ID_WALL || code == Sprite.CODE_ID_BRICK || code == Sprite.CODE_ID_BOOM)
         {
             can_move = false;
         }
@@ -351,20 +347,7 @@ public class Move {
     public static void checkRun(Animal animal) {
         if (animal instanceof Bomber && animal.getCount() > 0) {
             setDirection(animal.getDirection(), animal, 8 * speed);
-
-//            int x = animal.getXBlock();
-//            int y = animal.getYBlock();
-//            int [][] map = checkWall;
-//            int nextBlock;
-//            switch (animal.direction) {
-//                case "up": nextBlock = map[x-1][y];
-//                case "down" : nextBlock = map[x+1][y];
-//                case "right": nextBlock = map[x][y+1];
-//                case "left": nextBlock = map[x][y-1];
-//                default: nextBlock = -1;
-//            }
-//            if (nextBlock != Sprite.CODE_ID_WALL && nextBlock != Sprite.CODE_ID_BRICK)
-                animal.setCount(animal.getCount() - 1);
+            animal.setCount(animal.getCount() - 1);
         }
         //run entity
         if (animal instanceof Balloom && animal.getCount() > 0) {

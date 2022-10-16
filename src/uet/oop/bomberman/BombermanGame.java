@@ -6,14 +6,19 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.explosion.Explosion;
+import uet.oop.bomberman.entities.explosion.HorizontalExplosion;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.utils.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static uet.oop.bomberman.entities.Portal.is_portal;
 
 public class BombermanGame extends Application {
     
@@ -23,6 +28,10 @@ public class BombermanGame extends Application {
     public static Animal bomber;
     public static Animal balloom;
     public static Animal oneal;
+    public static SpeedItem speedItem;
+    public static FlameItem flameItem;
+    public static BombItem bombItem;
+
     private GraphicsContext gc;
     private Canvas canvas;
 
@@ -31,7 +40,6 @@ public class BombermanGame extends Application {
     private List<Entity> stillObjects = new ArrayList<>();
     public static int [][] checkWall = new int[WIDTH][HEIGHT];
     public static final List<Entity> block = new ArrayList<>(); // chứa bomb
-
     static BombermanGame instance;
 
     public static BombermanGame getInstance() {
@@ -44,6 +52,7 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
+
         instance = this;
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
@@ -80,12 +89,15 @@ public class BombermanGame extends Application {
                     break;
             }
         });
-
         // init bomber
         bomber = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomber);
-        balloom = new Balloom(5, 5, Sprite.balloom_right1.getFxImage());
+        balloom = new Balloom(15, 1, Sprite.balloom_right1.getFxImage());
         oneal = new Oneal(10, 10, Sprite.oneal_right1.getFxImage());
+        speedItem = new SpeedItem(2, 1, Sprite.powerup_speed.getFxImage());
+        flameItem = new FlameItem(10,11, Sprite.powerup_flames.getFxImage());
+        bombItem = new BombItem(3, 1, Sprite.powerup_bombpass.getFxImage());
+
+
         entity.add(balloom);
         entity.add(oneal);
 
@@ -117,6 +129,7 @@ public class BombermanGame extends Application {
                 String line = map.get(i);
                 for (int j = 0; j < line.length(); j++) {
                     int codeID = Integer.parseInt(String.valueOf(line.charAt(j))) ;
+
                     checkWall[j][i] = codeID;
                     System.out.print(checkWall[j][i]);
                     Entity entity = null;
@@ -142,8 +155,7 @@ public class BombermanGame extends Application {
                         Entity grass = new Grass(j, i, Sprite.grass.getFxImage());
                         stillObjects.add(grass);
                         entities.add(entity);
-                    }
-                    else if (entity instanceof Brick) {
+                    } else if (entity instanceof Brick) {
                         stillObjects.add(new Grass(j, i, Sprite.grass.getFxImage()));
                     }
                     stillObjects.add(entity);
@@ -155,6 +167,9 @@ public class BombermanGame extends Application {
 
     public void update() {
         for (Entity ett : entities) {
+            ett.update();
+        }
+        for (Entity ett: block) {
             ett.update();
         }
         for (int i = 0; i < block.size(); i++) {
@@ -170,6 +185,7 @@ public class BombermanGame extends Application {
                             if (e.getXBlock() == explosion.getXBlock() && e.getYBlock() == explosion.getYBlock()) {
                                 if (e instanceof Brick) {
                                     stillObjects.remove(e);
+                                    checkWall[e.getX()/32][e.getY()/32] = 1;
                                     break;
                                 }
                             }
@@ -179,16 +195,22 @@ public class BombermanGame extends Application {
                     block.remove(ett);
                     i--;
                 }
-            }
-            else ett.update();
+            } else ett.update();
         }
+
         for (Entity ett: entity) {
             ett.update();
         }
+
+        //update items
+        speedItem.update();
+        flameItem.update();
+        bombItem.update();
         //update bomber
         bomber.update();
         balloom.update();
         oneal.update();
+
 
         bomber.setCountToRun(bomber.getCountToRun() + 1);
         if (bomber.getCountToRun() == 4) {
@@ -205,22 +227,38 @@ public class BombermanGame extends Application {
             Move.checkRun(oneal);
             oneal.setCountToRun(0);
         }
-    }
 
+        // load Portal, chưa xử lí qua level & kiêm tra bomb nổ.
+        if (!is_portal /*&& entity.size() == 0 */) {
+            Entity portal = new Portal(13, 13, Sprite.portal.getFxImage());
+            block.add(portal);
+            if (bomber.getX()== portal.getX() && bomber.getY()== portal.getY()) {
+                portal.setImg(Sprite.grass.getFxImage());
+                block.add(portal);
+                is_portal = true;
+            }
+        }
+    }
 
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
+        //render items
+        speedItem.render(gc);
+        flameItem.render(gc);
+        bombItem.render(gc);
+
         entities.forEach(g -> g.render(gc));
         block.forEach(g -> g.render(gc));
         entity.forEach(g -> g.render(gc));
 
-        bomber.render(gc);
         balloom.render(gc);
         oneal.render(gc);
-    }
 
+        //render bomber
+        bomber.render(gc);
+    }
     public List<Entity> getEntities() {
         return entities;
     }

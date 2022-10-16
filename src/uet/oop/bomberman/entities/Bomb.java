@@ -2,7 +2,6 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.explosion.Explosion;
 import uet.oop.bomberman.entities.explosion.HorizontalExplosion;
 import uet.oop.bomberman.entities.explosion.VerticalExplosion;
@@ -12,24 +11,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static uet.oop.bomberman.BombermanGame.*;
+import static uet.oop.bomberman.entities.BombItem.can_add_bomb;
+import static uet.oop.bomberman.entities.FlameItem.damageLevel;
+
 
 public class Bomb extends Entity {
 
+    static int bomb_number = 0;         // number of bomb in map
     int animate = 0;
     int time = 20;
-
-    int renderTime = 34;
-
-    List<Explosion> explosionList = new ArrayList<>();
-    int damageLevel = 1;
+    static int tempx = -1;
+    static int tempy = -1;
 
     Thread thread;
+    int renderTime = 34;
+    int time_render_temp = 34; // luu thoi gian flame no de xac dinh thoi gian co the set bomb
+    List<Explosion> explosionList = new ArrayList<>();
+
     public Bomb(int x, int y, Image img) {
         super(x, y, img);
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (time > 0) {
+                    if (!can_add_bomb) bomb_number = 1;
                     time --;
                     System.out.println(time);
                     try {
@@ -38,11 +43,13 @@ public class Bomb extends Entity {
                         e.printStackTrace();
                     }
                 }
+                if (!can_add_bomb)  bomb_number = 0;
+                checkWall[tempx][tempy] = Sprite.CODE_ID_GRASS;
+                if (can_add_bomb) bomb_number--;
                 initializeExplosion();
                 block.addAll(explosionList);
             }
         });
-
     }
 
     public void initializeExplosion() {
@@ -54,7 +61,7 @@ public class Bomb extends Entity {
             Explosion downExplosion;
             Explosion rightExplosion;
             Explosion leftExplosion;
-            if (index == damageLevel - 1) {
+            if (index == damageLevel - 1 || index == damageLevel -2) {
                 topExplosion = new VerticalExplosion(xBlock, yBlock - index - 1
                         , Sprite.explosion_vertical_top_last.getFxImage(), true, true);
                 downExplosion = new VerticalExplosion(xBlock, yBlock + index + 1
@@ -111,13 +118,12 @@ public class Bomb extends Entity {
             index++;
         }
     }
+
     @Override
     public void update() {
         if (thread.getState().equals(Thread.State.NEW)) thread.start();
         animate++;
     }
-
-    @Override
     public void render(GraphicsContext gc) {
         if (time > 0)
             setImg(Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2,animate , renderTime).getFxImage());
@@ -127,10 +133,21 @@ public class Bomb extends Entity {
     }
 
     public static void set_Bomb() {
-        Bomb bomb = new Bomb(bomber.getX() / 32, bomber.getY() / 32, Sprite.bomb.getFxImage());
-        block.add(bomb);
+        // con bug dat vo so bomb khi an items
+        if (bomb_number == 0 || can_add_bomb && bomb_number < 2) {
+            if (can_add_bomb) {
+                bomb_number++;
+            }
+            if (tempx != -1 && tempy != -1) {
+                checkWall[tempx][tempy] = Sprite.CODE_ID_GRASS;
+            }
+            tempx = bomber.getX()/32;
+            tempy = bomber.getY()/32;
+            Bomb bomb = new Bomb(bomber.getX() / 32, bomber.getY() / 32, Sprite.bomb.getFxImage());
+            checkWall[tempx][tempy] = Sprite.CODE_ID_BOOM;
+            block.add(bomb);
+        }
     }
-
     public int getTime() {
         return time;
     }
@@ -138,7 +155,6 @@ public class Bomb extends Entity {
     public void setTime(int time) {
         this.time = time;
     }
-
     public List<Explosion> getExplosionList() {
         return explosionList;
     }
@@ -147,6 +163,7 @@ public class Bomb extends Entity {
         this.explosionList = explosionList;
     }
 
+
     public boolean isAlive() {
         if (time > 0) return true;
         for (Explosion explosion : explosionList) {
@@ -154,4 +171,5 @@ public class Bomb extends Entity {
         }
         return true;
     }
+
 }
