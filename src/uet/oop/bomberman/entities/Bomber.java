@@ -54,8 +54,8 @@ public class Bomber extends Animal {
         for (Animal animal : entity) {
             int bx = animal.getX() / 32;
             int by = animal.getY() / 32;
-            if (ax == bx && by - 0.5 <= ay && by + 0.5 >= ay
-                    || ay == by && bx - 0.5 <= ax && bx + 0.5 >= ax) {
+            if (ax == bx && by - 0.5 <= ay && by + 0.5 >= ay && animal.life
+                    || ay == by && bx - 0.5 <= ax && bx + 0.5 >= ax && animal.life) {
                 bomber.life = false;
                 break;
             }

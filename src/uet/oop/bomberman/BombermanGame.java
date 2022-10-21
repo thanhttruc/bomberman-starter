@@ -11,19 +11,23 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.explosion.Explosion;
-import uet.oop.bomberman.entities.explosion.HorizontalExplosion;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.utils.FileUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static uet.oop.bomberman.entities.Menu.statusGame;
 import static uet.oop.bomberman.entities.Portal.is_portal;
+import static uet.oop.bomberman.entities.Sound.updateSound;
 
 public class BombermanGame extends Application {
     
     public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
+
+    public static ImageView menu_game;
+    public static Image menu;
 
     public static Animal bomber;
     public static Animal balloom;
@@ -52,15 +56,20 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-
+        
         instance = this;
-        // Tao Canvas
+        //Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
+        canvas.setTranslateY(32);
         // Tao root container
         Group root = new Group();
+        Menu.createMenu(root);
         root.getChildren().add(canvas);
+
+        root.getChildren().add(menu_game);
+        root.getChildren().add(statusGame);
 
         // Tao scene
         Scene scene = new Scene(root);
@@ -74,15 +83,19 @@ public class BombermanGame extends Application {
             switch (event.getCode()) {
                 case UP:
                     Move.up(bomber);
+                    new Sound("levels/SoundMoveDownUp.wav","up");
                     break;
                 case DOWN:
                     Move.down(bomber);
+                    new Sound("levels/SoundMoveDownUp.wav","down");
                     break;
                 case RIGHT:
                     Move.right(bomber);
+                    new Sound("levels/SoundMoveLeftRight.wav","right");
                     break;
                 case LEFT:
                     Move.left(bomber);
+                    new Sound("levels/SoundMoveLeftRight.wav","left");
                     break;
                 case SPACE:
                     Bomb.set_Bomb();
@@ -108,6 +121,7 @@ public class BombermanGame extends Application {
                 update();
             }
         };
+
         timer.start();
 
         createMap();
@@ -209,6 +223,7 @@ public class BombermanGame extends Application {
         for (Entity ett: entity) {
             ett.update();
         }
+        updateSound();
 
 
         bomber.setCountToRun(bomber.getCountToRun() + 1);

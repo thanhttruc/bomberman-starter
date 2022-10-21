@@ -26,7 +26,7 @@ public class FlameItem extends Items {
             if (bomber.getX() == this.x && bomber.getY() == this.y) {
                 this.setImg(Sprite.grass.getFxImage());
                 this.used = true;
-                //damageLevel = 2;
+                damageLevel = 2;
             }
     }
 }
