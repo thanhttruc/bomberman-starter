@@ -91,6 +91,7 @@ public class Sound extends JFrame{
         if (!bomber.isLife()) {
             if (!is_SoundBomberDie) {
                 new Sound("levels/SoundBomberDie.wav", "die");
+                main_game.close();
                 is_SoundBomberDie = true;
             }
         }

@@ -105,10 +105,6 @@ public class Bomb extends Entity {
             rightExplosion.setAnimate(animate % renderTime);
             leftExplosion.setAnimate(animate%renderTime);
 
-            //int [][] map = checkWall;
-//            int x;
-//            int y;
-
             x = topExplosion.getXBlock();
             y = topExplosion.getYBlock();
             if (map_flame[x][y] != Sprite.CODE_ID_WALL) {

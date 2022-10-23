@@ -37,6 +37,7 @@ public class Bomber extends Animal {
                 swap_img = 4;
             } else {
                 animal.setImg(Sprite.transparent.getFxImage());
+                is_running = false;
             }
         }
     }

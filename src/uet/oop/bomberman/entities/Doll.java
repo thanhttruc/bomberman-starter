@@ -8,21 +8,24 @@ import java.util.Random;
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.entities.Bomb.map_flame;
 
-public class Balloom extends Animal {
 
-    public Balloom(int is_move, int swap, String direction, int count, int count_to_run) {
+public class Doll extends Animal {
+
+    public Doll(int is_move, int swap, String direction, int count, int count_to_run) {
         super(4, 1, "up", 0, 0);
     }
-    public Balloom(int x, int y, Image img) {
+
+    public Doll(int x, int y, Image img) {
         super(x, y, img);
     }
 
     public int swap_img = 1;
     public int delay_swap = 0;
-    private void Balloom_dead(Animal animal) {
+
+    private void Doll_dead(Animal animal) {
         if (delay_swap % 25 == 0) {
             if (swap_img == 1) {
-                animal.setImg(Sprite.balloom_dead.getFxImage());
+                animal.setImg(Sprite.doll_dead.getFxImage());
                 swap_img = 2;
             } else if (swap_img == 2) {
                 animal.setImg(Sprite.mob_dead1.getFxImage());
@@ -35,14 +38,15 @@ public class Balloom extends Animal {
                 swap_img = 5;
             } else {
                 animal.setImg(Sprite.transparent.getFxImage());
-                entity.remove(balloom);
-                balloom.setLife(false);
+                entity.remove(doll);
+                doll.setLife(false);
                 swap_img = 1;
             }
         }
     }
+
     private void checkBomb() {
-        for (Animal ett: entity) {
+        for (Animal ett : entity) {
             int ax = ett.getX() / 32;
             int ay = ett.getY() / 32;
             if (map_flame[ax][ay] == 5) {
@@ -75,8 +79,8 @@ public class Balloom extends Animal {
         delay_swap++;
         for (int i = 0; i < entity.size(); i++) {
             Animal temp = entity.get(i);
-            if (temp instanceof Balloom && !temp.life) {
-                Balloom_dead(temp);
+            if (temp instanceof Doll && !temp.life) {
+                Doll_dead(temp);
             }
         }
     }
