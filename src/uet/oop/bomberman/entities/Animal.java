@@ -1,7 +1,6 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
-import uet.oop.bomberman.graphics.Sprite;
 
 public class Animal extends Entity {
     protected int is_move;        // move ( pixel )
@@ -9,8 +8,7 @@ public class Animal extends Entity {
     protected String direction;   // in4 from user (move bomber)
     protected int count;          // count step of a jump
     protected int count_to_run;   // run after count frame
-    protected boolean life = true;       // life of enemy
-
+    protected boolean life = true;       // life of enemy && bomber
 
     public Animal(int x_unit, int y_unit, Image img) {
         super(x_unit, y_unit, img);
@@ -23,7 +21,6 @@ public class Animal extends Entity {
         this.count = count;
         this.count_to_run = count_to_run;
     }
-
 
     public Animal(boolean life) {
         this.life = life;

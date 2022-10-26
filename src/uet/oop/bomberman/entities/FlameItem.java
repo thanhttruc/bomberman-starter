@@ -24,6 +24,7 @@ public class FlameItem extends Items {
     public void update() {
         if (!this.used)
             if (bomber.getX() == this.x && bomber.getY() == this.y) {
+                new Sound("levels/SoundItems.wav","receiveItem");
                 this.setImg(Sprite.grass.getFxImage());
                 this.used = true;
                 damageLevel = 2;

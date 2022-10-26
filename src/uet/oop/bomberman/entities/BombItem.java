@@ -24,6 +24,7 @@ public class BombItem extends Items {
         if (!this.used)
             if (bomber.getX() == this.x && bomber.getY() == this.y) {
                 //Grass grass = new Grass(this.x/32, this.y/32, Sprite.grass.getFxImage());
+                new Sound("levels/SoundItems.wav","receiveItem");
                 this.setImg(Sprite.grass.getFxImage());
                 this.used = true;
                 can_add_bomb = true;

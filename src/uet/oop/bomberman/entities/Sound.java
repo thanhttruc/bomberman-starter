@@ -15,7 +15,9 @@ public class Sound extends JFrame{
     public static Clip move_right;
     public static Clip move_up;
     public static Clip move_down;
+    public static Clip SoundBomb;
     public static Clip main_game;
+    public static Clip next_level;
     public static boolean is_SoundBomberDie;
 
     public Sound(String name, String sound) {
@@ -45,6 +47,13 @@ public class Sound extends JFrame{
                 FloatControl gainControl = (FloatControl) bomb_explosion.getControl(FloatControl.Type.MASTER_GAIN);
                 gainControl.setValue(-8.0f);
                 bomb_explosion.start();
+            }
+            if (sound.equals("receiveItem")) {
+                SoundBomb = AudioSystem.getClip();
+                SoundBomb.open(audio_input);
+                FloatControl gainControl = (FloatControl) SoundBomb.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(-8.0f);
+                SoundBomb.start();
             }
             if (sound.equals("left")) {
                 move_left = AudioSystem.getClip();
@@ -80,6 +89,12 @@ public class Sound extends JFrame{
                 FloatControl gainControl = (FloatControl) main_game.getControl(FloatControl.Type.MASTER_GAIN);
                 gainControl.setValue(-8.0f);
                 main_game.loop(24);
+            }
+            if (sound.equals("win")) {
+                next_level = AudioSystem.getClip();
+                next_level.open(audio_input);
+                FloatControl gainControl = (FloatControl) next_level.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(-8.0f);
             }
 
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

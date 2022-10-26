@@ -7,14 +7,21 @@ import java.util.Random;
 
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.entities.Bomb.map_flame;
+import static uet.oop.bomberman.entities.Menu.Score;
+import static uet.oop.bomberman.entities.Menu.updateMenu;
 
 public class Balloom extends Animal {
 
     public Balloom(int is_move, int swap, String direction, int count, int count_to_run) {
         super(4, 1, "up", 0, 0);
     }
+
     public Balloom(int x, int y, Image img) {
         super(x, y, img);
+    }
+
+    public Balloom(boolean life) {
+        super(life);
     }
 
     public int swap_img = 1;
@@ -35,8 +42,10 @@ public class Balloom extends Animal {
                 swap_img = 5;
             } else {
                 animal.setImg(Sprite.transparent.getFxImage());
-                entity.remove(balloom);
-                balloom.setLife(false);
+                animal.setLife(false);
+                Score += 10;
+                //updateMenu();
+                entity.remove(animal);
                 swap_img = 1;
             }
         }

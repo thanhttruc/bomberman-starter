@@ -72,6 +72,11 @@ public class Move {
                 animal.setCount(8);
                 checkRun(animal);
             }
+            if (animal instanceof Minvo && can_down(animal)) {
+                animal.setDirection("down");
+                animal.setCount(8);
+                checkRun(animal);
+            }
         }
     }
     private static void down_step(Animal animal) {
@@ -139,6 +144,22 @@ public class Move {
                 animal.setSwap(1);
             }
         }
+        // Minvo
+        if (animal instanceof Minvo) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.minvo_right1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.minvo_right2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.minvo_right3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.minvo_right2.getFxImage());
+                animal.setSwap(1);
+            }
+        }
         //Oneal
         if (animal instanceof Oneal) {
             if (animal.getSwap() == 1) {
@@ -180,6 +201,11 @@ public class Move {
                 checkRun(animal);
             }
             if (animal instanceof Doll && can_up(animal)) {
+                animal.setDirection("up");
+                animal.setCount(8);
+                checkRun(animal);
+            }
+            if (animal instanceof Minvo && can_up(animal)) {
                 animal.setDirection("up");
                 animal.setCount(8);
                 checkRun(animal);
@@ -250,6 +276,22 @@ public class Move {
                 animal.setSwap(1);
             }
         }
+        // Doll
+        if (animal instanceof Minvo) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.minvo_left1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.minvo_left2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.minvo_left3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.minvo_left2.getFxImage());
+                animal.setSwap(1);
+            }
+        }
         //oneal
         if (animal instanceof  Oneal) {
             if (animal.getSwap() == 1) {
@@ -291,6 +333,11 @@ public class Move {
                 checkRun(animal);
             }
             if (animal instanceof Doll && can_left(animal)) {
+                animal.setDirection("left");
+                animal.setCount(8);
+                checkRun(animal);
+            }
+            if (animal instanceof Minvo && can_left(animal)) {
                 animal.setDirection("left");
                 animal.setCount(8);
                 checkRun(animal);
@@ -361,6 +408,22 @@ public class Move {
                 animal.setSwap(1);
             }
         }
+        // Minvo
+        if (animal instanceof Minvo) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.minvo_right1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.minvo_right2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.minvo_right3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.minvo_right1.getFxImage());
+                animal.setSwap(1);
+            }
+        }
         //oneal
         if (animal instanceof Oneal) {
             if (animal.getSwap() == 1) {
@@ -403,6 +466,11 @@ public class Move {
                 checkRun(animal);
             }
             if (animal instanceof Doll && can_right(animal)) {
+                animal.setDirection("right");
+                animal.setCount(8);
+                checkRun(animal);
+            }
+            if (animal instanceof Minvo && can_right(animal)) {
                 animal.setDirection("right");
                 animal.setCount(8);
                 checkRun(animal);
@@ -473,6 +541,22 @@ public class Move {
                 animal.setSwap(1);
             }
         }
+        // Minvo
+        if (animal instanceof Minvo) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.minvo_left1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.minvo_left2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.minvo_left3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.minvo_left2.getFxImage());
+                animal.setSwap(1);
+            }
+        }
         //oneal
         if (animal instanceof  Oneal) {
             if (animal.getSwap() == 1) {
@@ -531,6 +615,10 @@ public class Move {
             animal.setCount(animal.getCount() - 1);
         }
         if (animal instanceof Doll && animal.getCount() > 0) {
+            setDirection(animal.getDirection(), animal, 4);
+            animal.setCount(animal.getCount() - 1);
+        }
+        if (animal instanceof Minvo && animal.getCount() > 0) {
             setDirection(animal.getDirection(), animal, 4);
             animal.setCount(animal.getCount() - 1);
         }

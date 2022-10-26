@@ -7,6 +7,8 @@ import java.util.Random;
 
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.entities.Bomb.map_flame;
+import static uet.oop.bomberman.entities.Menu.Score;
+import static uet.oop.bomberman.entities.Menu.updateMenu;
 
 
 public class Kondoria extends Animal {
@@ -38,8 +40,10 @@ public class Kondoria extends Animal {
                 swap_img = 5;
             } else {
                 animal.setImg(Sprite.transparent.getFxImage());
-                entity.remove(kondoria);
                 kondoria.setLife(false);
+                Score += 10;
+                //updateMenu();
+                entity.remove(kondoria);
                 swap_img = 1;
             }
         }

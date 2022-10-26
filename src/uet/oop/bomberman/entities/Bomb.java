@@ -13,6 +13,7 @@ import java.util.List;
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.entities.BombItem.can_add_bomb;
 import static uet.oop.bomberman.entities.FlameItem.damageLevel;
+import static uet.oop.bomberman.entities.Menu.*;
 
 
 public class Bomb extends Entity {
@@ -70,29 +71,49 @@ public class Bomb extends Entity {
         int yBlock = getYBlock();
         int index = 0;
         while (index < damageLevel) {
-            Explosion topExplosion;
-            Explosion downExplosion;
-            Explosion rightExplosion;
-            Explosion leftExplosion;
+            Explosion topExplosion = new VerticalExplosion(xBlock, yBlock - index - 1
+                    , Sprite.explosion_vertical_top_last.getFxImage(), true, true);
+            Explosion downExplosion = new VerticalExplosion(xBlock, yBlock + index + 1
+                    , Sprite.explosion_vertical_down_last.getFxImage(), true, false);
+            Explosion rightExplosion = new HorizontalExplosion(xBlock + index + 1, yBlock
+                    , Sprite.explosion_horizontal_right_last.getFxImage(), true, true);
+            Explosion leftExplosion= new HorizontalExplosion(xBlock - index - 1, yBlock
+                    , Sprite.explosion_horizontal_left_last.getFxImage(), true, false);
             if (index == damageLevel - 1 /*|| index == damageLevel -2 */) {
-                topExplosion = new VerticalExplosion(xBlock, yBlock - index - 1
-                        , Sprite.explosion_vertical_top_last.getFxImage(), true, true);
-                downExplosion = new VerticalExplosion(xBlock, yBlock + index + 1
-                        , Sprite.explosion_vertical_down_last.getFxImage(), true, false);
-                rightExplosion = new HorizontalExplosion(xBlock + index + 1, yBlock
-                        , Sprite.explosion_horizontal_right_last.getFxImage(), true, true);
-                leftExplosion = new HorizontalExplosion(xBlock - index - 1, yBlock
-                        , Sprite.explosion_horizontal_left_last.getFxImage(), true, false);
+                if (yBlock > 1) {
+                    topExplosion = new VerticalExplosion(xBlock, yBlock - index - 1
+                            , Sprite.explosion_vertical_top_last.getFxImage(), true, true);
+                }
+                if (yBlock < 11) {
+                    downExplosion = new VerticalExplosion(xBlock, yBlock + index + 1
+                            , Sprite.explosion_vertical_down_last.getFxImage(), true, false);
+                }
+                if (xBlock < 11) {
+                    rightExplosion = new HorizontalExplosion(xBlock + index + 1, yBlock
+                            , Sprite.explosion_horizontal_right_last.getFxImage(), true, true);
+                }
+                if (xBlock > 1) {
+                    leftExplosion = new HorizontalExplosion(xBlock - index - 1, yBlock
+                            , Sprite.explosion_horizontal_left_last.getFxImage(), true, false);
+                }
             }
             else {
-                topExplosion = new VerticalExplosion(xBlock, yBlock - index - 1
-                        , Sprite.explosion_vertical_top_last.getFxImage(), false, true);
-                downExplosion = new VerticalExplosion(xBlock + index + 1, yBlock
-                        , Sprite.explosion_vertical_down_last.getFxImage(), false, false);
-                rightExplosion = new HorizontalExplosion(xBlock + index + 1, yBlock
-                        , Sprite.explosion_horizontal_right_last.getFxImage(), false, true);
-                leftExplosion = new HorizontalExplosion(xBlock - index - 1, yBlock
-                        , Sprite.explosion_horizontal_left_last.getFxImage(), false, false);
+                if (yBlock > 0) {
+                    topExplosion = new VerticalExplosion(xBlock, yBlock - index - 1
+                            , Sprite.explosion_vertical_top_last.getFxImage(), false, true);
+                }
+                if (yBlock < 11) {
+                    downExplosion = new VerticalExplosion(xBlock, yBlock + index + 1
+                            , Sprite.explosion_vertical_down_last.getFxImage(), false, false);
+                }
+                if (xBlock < 11) {
+                    rightExplosion = new HorizontalExplosion(xBlock + index + 1, yBlock
+                            , Sprite.explosion_horizontal_right_last.getFxImage(), false, true);
+                }
+                if (xBlock > 0) {
+                    leftExplosion = new HorizontalExplosion(xBlock - index - 1, yBlock
+                            , Sprite.explosion_horizontal_left_last.getFxImage(), false, false);
+                }
             }
 
             topExplosion.setTime(renderTime);
@@ -107,6 +128,7 @@ public class Bomb extends Entity {
 
             x = topExplosion.getXBlock();
             y = topExplosion.getYBlock();
+            if (y < 0) y = 0;
             if (map_flame[x][y] != Sprite.CODE_ID_WALL) {
                 explosionList.add(topExplosion);
                 int temp = 0;
@@ -128,6 +150,7 @@ public class Bomb extends Entity {
 
             x = downExplosion.getXBlock();
             y = downExplosion.getYBlock();
+            if (y > 12) y = 12;
             if (map_flame[x][y] != Sprite.CODE_ID_WALL) {
                 explosionList.add(downExplosion);
                 int temp = 0;
@@ -147,6 +170,7 @@ public class Bomb extends Entity {
 
             x = rightExplosion.getXBlock();
             y = rightExplosion.getYBlock();
+            if (x > 30) x = 30;
             if (map_flame[x][y] != Sprite.CODE_ID_WALL) {
                 explosionList.add(rightExplosion);
                 int temp = 0;
@@ -166,6 +190,7 @@ public class Bomb extends Entity {
 
             x = leftExplosion.getXBlock();
             y = leftExplosion.getYBlock();
+            if (x < 0) x = 0;
             if (map_flame[x][y] != Sprite.CODE_ID_WALL) {
                 explosionList.add(leftExplosion);
                 int temp = 0;
@@ -200,10 +225,8 @@ public class Bomb extends Entity {
     }
 
     public static void set_Bomb() {
-
         if (bomb_number == 0 || can_add_bomb && bomb_number < 2) {
             new Sound("levels/SetBomb.wav", "setBomb");
-
             if (can_add_bomb) {
                 bomb_number++;
             }
@@ -215,7 +238,8 @@ public class Bomb extends Entity {
             Bomb bomb = new Bomb(bomber.getX() / 32, bomber.getY() / 32, Sprite.bomb.getFxImage());
             checkWall[tempx][tempy] = Sprite.CODE_ID_BOOM;
             //map_flame[tempx][tempy] = 5;
-
+            bomb_game--;
+            //updateMenu();
             block.add(bomb);
         }
     }
