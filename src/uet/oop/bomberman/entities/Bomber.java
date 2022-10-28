@@ -146,27 +146,27 @@ public class Bomber extends Animal {
         bomber = new Bomber(1, 1, Sprite.player_right.getFxImage());
 
         balloom = new Balloom(17, 1, Sprite.balloom_right1.getFxImage());
-        balloom1 = new Balloom(24, 3, Sprite.balloom_right1.getFxImage());
-        oneal = new Oneal(10, 10, Sprite.oneal_right1.getFxImage());
-        oneal1 = new Oneal(24, 5, Sprite.oneal_right1.getFxImage());
-        oneal2 = new Oneal(18, 3, Sprite.oneal_right1.getFxImage());
+//        balloom1 = new Balloom(24, 3, Sprite.balloom_right1.getFxImage());
+//        oneal = new Oneal(10, 10, Sprite.oneal_right1.getFxImage());
+//        oneal1 = new Oneal(24, 5, Sprite.oneal_right1.getFxImage());
+//        oneal2 = new Oneal(18, 3, Sprite.oneal_right1.getFxImage());
         kondoria = new Kondoria(4,1, Sprite.kondoria_right1.getFxImage());
-        doll = new Doll(28, 11, Sprite.doll_right1.getFxImage());
-        minvo = new Minvo(28, 11, Sprite.minvo_right1.getFxImage());
+//        doll = new Doll(28, 11, Sprite.doll_right1.getFxImage());
+//        minvo = new Minvo(28, 11, Sprite.minvo_right1.getFxImage());
 
         // init items to play again
         speedItem = new SpeedItem(29, 11, Sprite.grass.getFxImage());
         flameItem = new FlameItem(29, 11, Sprite.grass.getFxImage());
         bombItem = new BombItem(29, 11, Sprite.grass.getFxImage());
         portal = new Portal(29, 11, Sprite.grass.getFxImage());
-        entity.add(balloom);
-        entity.add(balloom1);
-        entity.add(oneal);
-        entity.add(oneal1);
-        entity.add(oneal2);
+//        entity.add(balloom);
+//        entity.add(balloom1);
+//        entity.add(oneal);
+//        entity.add(oneal1);
+//        entity.add(oneal2);
         entity.add(kondoria);
-        entity.add(doll);
-        entity.add(minvo);
+//        entity.add(doll);
+//        entity.add(minvo);
     }
 
     @Override
