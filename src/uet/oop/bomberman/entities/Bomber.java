@@ -110,7 +110,6 @@ public class Bomber extends Animal {
             for (Animal animal : entity) {
                 animal.setLife(true);
             }
-
             init_Entity_Level1();
             new BombermanGame();
             updateMenu();

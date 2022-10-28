@@ -79,7 +79,7 @@ public class Bomb extends Entity {
                     , Sprite.explosion_horizontal_right_last.getFxImage(), true, true);
             Explosion leftExplosion= new HorizontalExplosion(xBlock - index - 1, yBlock
                     , Sprite.explosion_horizontal_left_last.getFxImage(), true, false);
-            if (index == damageLevel - 1 /*|| index == damageLevel -2 */) {
+            if (index == damageLevel - 1) {
                 if (yBlock > 1) {
                     topExplosion = new VerticalExplosion(xBlock, yBlock - index - 1
                             , Sprite.explosion_vertical_top_last.getFxImage(), true, true);

@@ -241,6 +241,10 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        if (is_playAgain) {
+            createMap();
+            is_playAgain = false;
+        }
         for (Entity ett : entities) {
             ett.update();
         }
@@ -343,10 +347,10 @@ public class BombermanGame extends Application {
             }
         }
 
-        if (is_playAgain) {
-            createMap();
-            is_playAgain = false;
-        }
+//        if (is_playAgain) {
+//            createMap();
+//            is_playAgain = false;
+//        }
         // load Portal
         if (!is_portal && entity.size() == 0) {
             if (bomber.getX()/32 == posx_portalItem && bomber.getY()/32 == posy_portalItem) {
