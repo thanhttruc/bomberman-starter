@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import static uet.oop.bomberman.entities.Bomber.exit_Game;
 import static uet.oop.bomberman.entities.Bomber.init_Entity_Level1;
 import static uet.oop.bomberman.entities.Menu.*;
 import static uet.oop.bomberman.entities.Portal.is_portal;
@@ -213,6 +214,7 @@ public class BombermanGame extends Application {
                         stillObjects.add(grass);
                         entities.add(entity);
                     } else if (entity instanceof Brick) {
+                        entities.add(entity);
                         stillObjects.add(new Grass(j, i, Sprite.grass.getFxImage()));
                     }
                     stillObjects.add(entity);
@@ -245,8 +247,15 @@ public class BombermanGame extends Application {
             createMap();
             is_playAgain = false;
         }
-        for (Entity ett : entities) {
+        int n = entities.size();
+        for (int i = 0; i < entities.size(); i++) {
+            Entity ett = entities.get(i);
             ett.update();
+            if (entities.size() < n) {
+                // khi ma update brick thi no xoa di, size thay doi, can check size
+                i--;
+                n = entities.size();
+            }
         }
         for (Entity ett: block) {
             ett.update();
@@ -263,22 +272,10 @@ public class BombermanGame extends Application {
                         for (Entity e : stillObjects) {
                             if (e.getXBlock() == explosion.getXBlock() && e.getYBlock() == explosion.getYBlock()) {
                                 if (e instanceof Brick) {
-                                    stillObjects.remove(e);
-                                    //flameitem
-                                    if (e.getX()/32 == posx_flameItem && e.getY()/32 == posy_flameItem) {
-                                        flameItem = new FlameItem(posx_flameItem, posy_flameItem, Sprite.powerup_flames.getFxImage());
-                                    }
-                                    //speeditem
-                                    if (e.getX()/32 == posx_speedItem && e.getY()/32 == posy_speedItem) {
-                                        speedItem = new SpeedItem(posx_speedItem, posy_speedItem, Sprite.powerup_speed.getFxImage());
-                                    }
-                                    //portal item
-                                    if (e.getX()/32 == posx_portalItem && e.getY()/32 == posy_portalItem) {
-                                        portal = new Portal(posx_portalItem, posy_portalItem, Sprite.portal.getFxImage());
-                                    }
-                                    checkWall[e.getX()/32][e.getY()/32] = 1;
+                                    ((Brick) e).remove();
                                     break;
                                 }
+
                             }
                         }
                         block.remove(explosion);
@@ -435,6 +432,7 @@ public class BombermanGame extends Application {
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
         stillObjects.forEach(g -> g.render(gc));
 
         //render items
