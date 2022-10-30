@@ -48,7 +48,7 @@ public class Bomber extends Animal {
             }
         }
     }
-    public static void createGameover(Group root) {
+    public void createGameover(Group root) {
         //add 2 button play again and exit
         Image playAgain = new Image("levels/PlayAgain.png");
         Image exitGame = new Image("levels/ExitGame.png");
@@ -92,6 +92,36 @@ public class Bomber extends Animal {
             exit_Game.setImage(transparent);
 
             level_rank = 1;
+            entity.clear();
+            block.clear();
+            //for (Entity ett: BombermanGame.getStillObjects()) {
+                for (int i = 0; i < BombermanGame.getStillObjects().size(); i++) {
+                    BombermanGame.getStillObjects().get(i).setImg(Sprite.grass.getFxImage());
+                    BombermanGame.getStillObjects().get(i).render(BombermanGame.getGc());
+                }
+            for (int i = 0; i < BombermanGame.getStillObjects().size(); i++) {
+                if (BombermanGame.getStillObjects().get(i).getX()/32 == posx_flameItem && BombermanGame.getStillObjects().get(i).getY()/32 == posy_flameItem) {
+                    BombermanGame.getStillObjects().get(i).setImg(transparent);
+                    new FlameItem(posx_flameItem, posy_flameItem,Sprite.powerup_flames.getFxImage()).render(BombermanGame.getGc());
+                }
+                if (BombermanGame.getStillObjects().get(i).getX()/32 == posx_bombItem && BombermanGame.getStillObjects().get(i).getY()/32 == posy_bombItem) {
+                    BombermanGame.getStillObjects().get(i).setImg(transparent);
+                    new BombItem(posx_bombItem, posy_bombItem,Sprite.powerup_bombs.getFxImage()).render(BombermanGame.getGc());
+                }
+                if (BombermanGame.getStillObjects().get(i).getX()/32 == posx_speedItem && BombermanGame.getStillObjects().get(i).getY()/32 == posy_speedItem) {
+                    BombermanGame.getStillObjects().get(i).setImg(transparent);
+                    new SpeedItem(posx_speedItem, posy_speedItem,Sprite.powerup_speed.getFxImage()).render(BombermanGame.getGc());
+                }
+                if (BombermanGame.getStillObjects().get(i).getX()/32 == posx_portalItem && BombermanGame.getStillObjects().get(i).getY()/32 == posy_portalItem) {
+                    BombermanGame.getStillObjects().get(i).setImg(transparent);
+                    new Portal(posx_portalItem, posy_portalItem,Sprite.portal.getFxImage()).render(BombermanGame.getGc());
+                }
+                BombermanGame.getStillObjects().get(i).render(BombermanGame.getGc());
+            }
+
+            list_item.clear();
+            BombermanGame.getStillObjects().clear();
+
             FlameItem.damageLevel = 1;
             SpeedItem.speed = 1;
             BombItem.can_add_bomb = false;
@@ -103,8 +133,6 @@ public class Bomber extends Animal {
             time_game = 200;
             bomb_game = 50;
 
-            entity.clear();
-            block.clear();
             swap_img = 1;
             bomber.setLife(true);
             for (Animal animal : entity) {
@@ -146,29 +174,65 @@ public class Bomber extends Animal {
         bomber = new Bomber(1, 1, Sprite.player_right.getFxImage());
 
         balloom = new Balloom(17, 1, Sprite.balloom_right1.getFxImage());
-//        balloom1 = new Balloom(24, 3, Sprite.balloom_right1.getFxImage());
-//        oneal = new Oneal(10, 10, Sprite.oneal_right1.getFxImage());
-//        oneal1 = new Oneal(24, 5, Sprite.oneal_right1.getFxImage());
-//        oneal2 = new Oneal(18, 3, Sprite.oneal_right1.getFxImage());
+        balloom1 = new Balloom(24, 3, Sprite.balloom_right1.getFxImage());
+        oneal = new Oneal(10, 10, Sprite.oneal_right1.getFxImage());
+        oneal1 = new Oneal(24, 5, Sprite.oneal_right1.getFxImage());
+        oneal2 = new Oneal(18, 3, Sprite.oneal_right1.getFxImage());
         kondoria = new Kondoria(4,1, Sprite.kondoria_right1.getFxImage());
-//        doll = new Doll(28, 11, Sprite.doll_right1.getFxImage());
-//        minvo = new Minvo(28, 11, Sprite.minvo_right1.getFxImage());
+        doll = new Doll(28, 11, Sprite.doll_right1.getFxImage());
+        minvo = new Minvo(28, 11, Sprite.minvo_right1.getFxImage());
 
         // init items to play again
         speedItem = new SpeedItem(29, 11, Sprite.grass.getFxImage());
         flameItem = new FlameItem(29, 11, Sprite.grass.getFxImage());
         bombItem = new BombItem(29, 11, Sprite.grass.getFxImage());
         portal = new Portal(29, 11, Sprite.grass.getFxImage());
-//        entity.add(balloom);
-//        entity.add(balloom1);
-//        entity.add(oneal);
-//        entity.add(oneal1);
-//        entity.add(oneal2);
+        cur_grass = new Grass(29, 11, Sprite.grass.getFxImage());
+        entity.add(balloom);
+        entity.add(balloom1);
+        entity.add(oneal);
+        entity.add(oneal1);
+        entity.add(oneal2);
         entity.add(kondoria);
-//        entity.add(doll);
-//        entity.add(minvo);
+        entity.add(doll);
+        entity.add(minvo);
     }
 
+    public static void init_Entity_Level2() {
+        //init entity to play new level
+        bomber = new Bomber(1, 1, Sprite.player_right.getFxImage());
+
+        balloom = new Balloom(17, 1, Sprite.balloom_right1.getFxImage());
+        balloom1 = new Balloom(24, 3, Sprite.balloom_right1.getFxImage());
+        oneal = new Oneal(10, 10, Sprite.oneal_right1.getFxImage());
+        oneal1 = new Oneal(24, 5, Sprite.oneal_right1.getFxImage());
+        ovape2 = new Ovape(18, 3, Sprite.ovape_right1.getFxImage());
+        kondoria = new Kondoria(4,1, Sprite.kondoria_right1.getFxImage());
+        doll = new Doll(28, 11, Sprite.doll_right1.getFxImage());
+        minvo = new Minvo(28, 11, Sprite.minvo_right1.getFxImage());
+
+        // init items
+        speedItem = new SpeedItem(29, 11, Sprite.grass.getFxImage());
+        flameItem = new FlameItem(29, 11, Sprite.grass.getFxImage());
+        bombItem = new BombItem(29, 11, Sprite.grass.getFxImage());
+        portal = new Portal(29, 11, Sprite.grass.getFxImage());
+        cur_grass = new Grass(29, 11, Sprite.grass.getFxImage());
+
+        // new entity
+        ovape = new Ovape(4, 5, Sprite.ovape_right1.getFxImage());
+        pass = new Pass(4,6, Sprite.pass_right1.getFxImage());
+
+        entity.add(balloom);
+        entity.add(balloom1);
+        entity.add(oneal);
+        entity.add(oneal1);
+        entity.add(ovape2);
+        entity.add(kondoria);
+        entity.add(doll);
+        entity.add(minvo);
+        entity.add(ovape);
+        entity.add(pass);
+    }
     @Override
     public void update() {
         checkEnemy();

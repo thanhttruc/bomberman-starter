@@ -18,7 +18,6 @@ import static uet.oop.bomberman.entities.Menu.*;
 
 public class Bomb extends Entity {
 
-    //public static int [][] map_flame = checkWall;
     public static int[][] map_flame = new int[WIDTH][HEIGHT];
     public static int x;
     public static int y;
@@ -32,7 +31,6 @@ public class Bomb extends Entity {
     int renderTime = 34;
 
     List<Explosion> explosionList = new ArrayList<>();
-
 
     public Bomb(int x, int y, Image img) {
         super(x, y, img);
@@ -257,7 +255,6 @@ public class Bomb extends Entity {
     public void setExplosionList(List<Explosion> explosionList) {
         this.explosionList = explosionList;
     }
-
 
     public boolean isAlive() {
         if (time > 0) return true;

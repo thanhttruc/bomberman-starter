@@ -8,7 +8,6 @@ import java.util.Random;
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.entities.Bomb.map_flame;
 import static uet.oop.bomberman.entities.Menu.Score;
-import static uet.oop.bomberman.entities.Menu.updateMenu;
 
 
 public class Kondoria extends Animal {

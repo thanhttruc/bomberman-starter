@@ -8,8 +8,6 @@ import java.util.Random;
 import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.entities.Bomb.map_flame;
 import static uet.oop.bomberman.entities.Menu.Score;
-import static uet.oop.bomberman.entities.Menu.updateMenu;
-
 
 public class Doll extends Animal {
 
@@ -42,7 +40,6 @@ public class Doll extends Animal {
                 animal.setImg(Sprite.transparent.getFxImage());
                 doll.setLife(false);
                 Score += 10;
-                //updateMenu();
                 entity.remove(doll);
                 swap_img = 1;
             }

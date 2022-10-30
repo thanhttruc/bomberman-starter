@@ -22,6 +22,7 @@ import java.util.List;
 
 
 import static uet.oop.bomberman.entities.Bomber.init_Entity_Level1;
+import static uet.oop.bomberman.entities.Bomber.init_Entity_Level2;
 import static uet.oop.bomberman.entities.Menu.*;
 import static uet.oop.bomberman.entities.Portal.is_portal;
 import static uet.oop.bomberman.entities.Sound.main_game;
@@ -44,6 +45,8 @@ public class BombermanGame extends Application {
     public static final int posy_speedItem = 3;
     public static final int posx_portalItem = 19;
     public static final int posy_portalItem = 11;
+    public static final int posx_bombItem = 7;
+    public static final int posy_bombItem = 1;
 
     public static ImageView menu_game;
     public static ImageView next_level;
@@ -60,18 +63,23 @@ public class BombermanGame extends Application {
     public static Animal kondoria;
     public static Animal doll;
     public static Animal minvo;
+    public static Animal ovape;
+    public static Animal pass;
+    public static Animal ovape2;
 
     public static SpeedItem speedItem;
     public static FlameItem flameItem;
     public static BombItem bombItem;
     public static Portal portal;
+    public static Grass cur_grass;
 
-    private GraphicsContext gc;
+    private static GraphicsContext gc;
     private Canvas canvas;
 
     public static List<Animal> entity = new ArrayList<>();
+    public static List<Items> list_item = new ArrayList<>();
     private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+    private static List<Entity> stillObjects = new ArrayList<>();
     public static int [][] checkWall = new int[WIDTH][HEIGHT];
     public static final List<Entity> block = new ArrayList<>(); // chứa bomb
     static BombermanGame instance;
@@ -213,6 +221,7 @@ public class BombermanGame extends Application {
                         stillObjects.add(grass);
                         entities.add(entity);
                     } else if (entity instanceof Brick) {
+                        entities.add(entity);
                         stillObjects.add(new Grass(j, i, Sprite.grass.getFxImage()));
                     }
                     stillObjects.add(entity);
@@ -239,18 +248,7 @@ public class BombermanGame extends Application {
             }
         }
     }
-
-    public void update() {
-        if (is_playAgain) {
-            createMap();
-            is_playAgain = false;
-        }
-        for (Entity ett : entities) {
-            ett.update();
-        }
-        for (Entity ett: block) {
-            ett.update();
-        }
+    public static void animation_Brick() {
         for (int i = 0; i < block.size(); i++) {
             Entity ett = block.get(i);
             if (ett instanceof Bomb) {
@@ -263,20 +261,27 @@ public class BombermanGame extends Application {
                         for (Entity e : stillObjects) {
                             if (e.getXBlock() == explosion.getXBlock() && e.getYBlock() == explosion.getYBlock()) {
                                 if (e instanceof Brick) {
-                                    stillObjects.remove(e);
                                     //flameitem
                                     if (e.getX()/32 == posx_flameItem && e.getY()/32 == posy_flameItem) {
                                         flameItem = new FlameItem(posx_flameItem, posy_flameItem, Sprite.powerup_flames.getFxImage());
+                                        list_item.add(flameItem);
                                     }
                                     //speeditem
                                     if (e.getX()/32 == posx_speedItem && e.getY()/32 == posy_speedItem) {
                                         speedItem = new SpeedItem(posx_speedItem, posy_speedItem, Sprite.powerup_speed.getFxImage());
+                                        list_item.add(speedItem);
                                     }
                                     //portal item
                                     if (e.getX()/32 == posx_portalItem && e.getY()/32 == posy_portalItem) {
                                         portal = new Portal(posx_portalItem, posy_portalItem, Sprite.portal.getFxImage());
                                     }
+                                    // bomb item
+                                    if (e.getX()/32 == posx_bombItem && e.getY()/32 == posy_bombItem) {
+                                        bombItem = new BombItem(posx_bombItem, posy_bombItem, Sprite.powerup_bombs.getFxImage());
+                                        list_item.add(bombItem);
+                                    }
                                     checkWall[e.getX()/32][e.getY()/32] = 1;
+                                    ((Brick) e).remove();
                                     break;
                                 }
                             }
@@ -288,11 +293,118 @@ public class BombermanGame extends Application {
                 }
             } else ett.update();
         }
+    }
+
+    public void update() {
+        if (is_playAgain) {
+            createMap();
+            is_playAgain = false;
+        }
+
+        int n = entities.size();
+        for (int i = 0; i < entities.size(); i++) {
+            Entity ett = entities.get(i);
+            ett.update();
+            if (entities.size() < n) {
+                i--;
+                n = entities.size();
+            }
+            ett.update();
+        }
+
+        for (Entity ett: block) {
+            ett.update();
+        }
+        animation_Brick();
+
+        // load Portal & next level
+        if (!is_portal && entity.size() == 0) {
+            if (bomber.getX()/32 == posx_portalItem && bomber.getY()/32 == posy_portalItem) {
+                portal.setImg(Sprite.grass.getFxImage());
+                is_portal = true;
+                is_running = false;
+                Image levelup = new Image("levels/LevelUp.png");
+                main_game.close();
+                new Sound("levels/SoundNextLevel.wav", "win");
+                menu_game.setImage(levelup);
+
+                // button nextLevel
+                Image nextLevel = new Image("levels/NextLevel.png");
+                next_level = new ImageView(nextLevel);
+                next_level.setX(0);
+                next_level.setY(80);
+                next_level.setScaleX(0.5);
+                next_level.setScaleY(0.5);
+                ColorAdjust colorAdjust = new ColorAdjust();
+                colorAdjust.setBrightness(-0.5);
+                next_level.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
+                    next_level.setEffect(colorAdjust);
+                });
+                next_level.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+                    next_level.setEffect(null);
+                });
+                Pane pane = new Pane();
+                pane.getChildren().addAll(next_level);
+                root.getChildren().add(pane);
+                next_level.setOnMouseClicked(event -> {
+
+                    FlameItem.damageLevel = 1;
+                    SpeedItem.speed = 1;
+                    BombItem.can_add_bomb = false;
+                    Image transparent = new Image("levels/transparent.png");
+
+                    entity.clear();
+                    block.clear();
+                    for (Entity ett: stillObjects) {
+                        ett.setImg(Sprite.grass.getFxImage());
+                        ett.render(gc);
+                    }
+                    for (int i = 0; i < BombermanGame.getStillObjects().size(); i++) {
+                        if (BombermanGame.getStillObjects().get(i).getX()/32 == posx_flameItem && BombermanGame.getStillObjects().get(i).getY()/32 == posy_flameItem) {
+                            BombermanGame.getStillObjects().get(i).setImg(transparent);
+                            new FlameItem(posx_flameItem, posy_flameItem,Sprite.powerup_flames.getFxImage()).render(BombermanGame.getGc());
+                        }
+                        if (BombermanGame.getStillObjects().get(i).getX()/32 == posx_bombItem && BombermanGame.getStillObjects().get(i).getY()/32 == posy_bombItem) {
+                            BombermanGame.getStillObjects().get(i).setImg(transparent);
+                            new BombItem(posx_bombItem, posy_bombItem,Sprite.powerup_bombs.getFxImage()).render(BombermanGame.getGc());
+                        }
+                        if (BombermanGame.getStillObjects().get(i).getX()/32 == posx_speedItem && BombermanGame.getStillObjects().get(i).getY()/32 == posy_speedItem) {
+                            BombermanGame.getStillObjects().get(i).setImg(transparent);
+                            new SpeedItem(posx_speedItem, posy_speedItem,Sprite.powerup_speed.getFxImage()).render(BombermanGame.getGc());
+                        }
+                        if (BombermanGame.getStillObjects().get(i).getX()/32 == posx_portalItem && BombermanGame.getStillObjects().get(i).getY()/32 == posy_portalItem) {
+                            BombermanGame.getStillObjects().get(i).setImg(transparent);
+                            new Portal(posx_portalItem, posy_portalItem,Sprite.portal.getFxImage()).render(BombermanGame.getGc());
+                        }
+                        BombermanGame.getStillObjects().get(i).render(BombermanGame.getGc());
+                    }
+
+                    list_item.clear();
+                    stillObjects.clear();
+                    level_rank = 2;
+
+                    createMap();
+                    next_level.setImage(transparent);
+                    menu_game.setImage(transparent);
+                    is_running = true;
+                    new Sound("levels/SoundMainGame.wav","main_game");
+
+                    for (Animal animal : entity) {
+                        animal.setLife(true);
+                    }
+                    init_Entity_Level2();
+                    bomb_game = 20;
+                    time_game = 120;
+                    updateMenu();
+                    new BombermanGame();
+                });
+            }
+        }
 
         //update items
-        speedItem.update();
-        flameItem.update();
-        bombItem.update();
+        for (Items it: list_item) {
+            it.update();
+        }
         portal.update();
 
         //update bomber
@@ -345,89 +457,19 @@ public class BombermanGame extends Application {
                     ett.setCountToRun(0);
                 }
             }
-        }
-
-//        if (is_playAgain) {
-//            createMap();
-//            is_playAgain = false;
-//        }
-        // load Portal
-        if (!is_portal && entity.size() == 0) {
-            if (bomber.getX()/32 == posx_portalItem && bomber.getY()/32 == posy_portalItem) {
-                portal.setImg(Sprite.grass.getFxImage());
-                is_portal = true;
-                is_running = false;
-                Image levelup = new Image("levels/LevelUp.png");
-                main_game.close();
-                new Sound("levels/SoundNextLevel.wav", "win");
-                menu_game.setImage(levelup);
-
-                // button nextLevel
-                Image nextLevel = new Image("levels/NextLevel.png");
-                next_level = new ImageView(nextLevel);
-                next_level.setX(0);
-                next_level.setY(80);
-                next_level.setScaleX(0.5);
-                next_level.setScaleY(0.5);
-                ColorAdjust colorAdjust = new ColorAdjust();
-                colorAdjust.setBrightness(-0.5);
-                next_level.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-                    next_level.setEffect(colorAdjust);
-                });
-                next_level.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-                    next_level.setEffect(null);
-                });
-                Pane pane = new Pane();
-                pane.getChildren().addAll(next_level);
-                root.getChildren().add(pane);
-                next_level.setOnMouseClicked(event -> {
-
-                    FlameItem.damageLevel = 1;
-                    SpeedItem.speed = 1;
-                    BombItem.can_add_bomb = false;
-
-                    level_rank = 2;
-                    createMap();
-                    Image transparent = new Image("levels/transparent.png");
-                    next_level.setImage(transparent);
-                    menu_game.setImage(transparent);
-                    //new Menu();
-                    is_running = true;
-                    new Sound("levels/SoundMainGame.wav","main_game");
-                    entity.clear();
-                    block.clear();
-                    for (Animal animal : entity) {
-                        animal.setLife(true);
-                    }
-                    //init entity to play again
-                    bomber = new Bomber(1, 1, Sprite.player_right.getFxImage());
-                    balloom = new Balloom(17, 1, Sprite.balloom_right1.getFxImage());
-                    balloom1 = new Balloom(24, 3, Sprite.balloom_right1.getFxImage());
-                    oneal = new Oneal(10, 10, Sprite.oneal_right1.getFxImage());
-                    oneal1 = new Oneal(24, 5, Sprite.oneal_right1.getFxImage());
-                    oneal2 = new Oneal(18, 3, Sprite.oneal_right1.getFxImage());
-                    kondoria = new Kondoria(4,1, Sprite.kondoria_right1.getFxImage());
-                    doll = new Doll(28, 11, Sprite.doll_right1.getFxImage());
-                    minvo = new Minvo(28, 11, Sprite.minvo_right1.getFxImage());
-
-                    // init items to play again
-                    speedItem = new SpeedItem(29, 11, Sprite.grass.getFxImage());
-                    flameItem = new FlameItem(29, 11, Sprite.grass.getFxImage());
-                    bombItem = new BombItem(29, 11, Sprite.grass.getFxImage());
-                    portal = new Portal(29, 11, Sprite.grass.getFxImage());
-                    entity.add(balloom);
-                    entity.add(balloom1);
-                    entity.add(oneal);
-                    entity.add(oneal1);
-                    entity.add(oneal2);
-                    entity.add(kondoria);
-                    entity.add(doll);
-                    entity.add(minvo);
-                    bomb_game = 20;
-                    time_game = 120;
-                    updateMenu();
-                    new BombermanGame();
-                });
+            if (ett instanceof Ovape) {
+                ett.setCountToRun(ett.getCountToRun() + 1);
+                if (ett.getCountToRun() == 4) {
+                    Move.checkRun(ett);
+                    ett.setCountToRun(0);
+                }
+            }
+            if (ett instanceof Pass) {
+                ett.setCountToRun(ett.getCountToRun() + 1);
+                if (ett.getCountToRun() == 4) {
+                    Move.checkRun(ett);
+                    ett.setCountToRun(0);
+                }
             }
         }
     }
@@ -438,10 +480,9 @@ public class BombermanGame extends Application {
         stillObjects.forEach(g -> g.render(gc));
 
         //render items
-        speedItem.render(gc);
-        flameItem.render(gc);
-        bombItem.render(gc);
+        list_item.forEach(g -> g.render(gc));
         portal.render(gc);
+
 
         entities.forEach(g -> g.render(gc));
         block.forEach(g -> g.render(gc));
@@ -459,7 +500,7 @@ public class BombermanGame extends Application {
         this.entities = entities;
     }
 
-    public List<Entity> getStillObjects() {
+    public static List<Entity> getStillObjects() {
         return stillObjects;
     }
 
@@ -474,4 +515,8 @@ public class BombermanGame extends Application {
     public static void setEntity(List<Animal> entity) {
         BombermanGame.entity = entity;
     }
+    public static GraphicsContext getGc() {
+        return gc;
+    }
+
 }

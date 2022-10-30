@@ -9,23 +9,23 @@ import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.entities.Bomb.map_flame;
 import static uet.oop.bomberman.entities.Menu.Score;
 
-public class Minvo extends Animal {
+public class Ovape extends Animal {
 
-    public Minvo(int is_move, int swap, String direction, int count, int count_to_run) {
+    public Ovape(int is_move, int swap, String direction, int count, int count_to_run) {
         super(4, 1, "up", 0, 0);
     }
 
-    public Minvo(int x, int y, Image img) {
+    public Ovape(int x, int y, Image img) {
         super(x, y, img);
     }
 
     public int swap_img = 1;
     public int delay_swap = 0;
 
-    private void Minvo_dead(Animal animal) {
+    private void Ovape_dead(Animal animal) {
         if (delay_swap % 25 == 0) {
             if (swap_img == 1) {
-                animal.setImg(Sprite.minvo_dead.getFxImage());
+                animal.setImg(Sprite.ovape_dead.getFxImage());
                 swap_img = 2;
             } else if (swap_img == 2) {
                 animal.setImg(Sprite.mob_dead1.getFxImage());
@@ -38,9 +38,10 @@ public class Minvo extends Animal {
                 swap_img = 5;
             } else {
                 animal.setImg(Sprite.transparent.getFxImage());
-                minvo.setLife(false);
+                ovape.setLife(false);
                 Score += 10;
-                entity.remove(minvo);
+                //updateMenu();
+                entity.remove(ovape);
                 swap_img = 1;
             }
         }
@@ -80,8 +81,8 @@ public class Minvo extends Animal {
         delay_swap++;
         for (int i = 0; i < entity.size(); i++) {
             Animal temp = entity.get(i);
-            if (temp instanceof Minvo && !temp.life) {
-                Minvo_dead(temp);
+            if (temp instanceof Ovape && !temp.life) {
+                Ovape_dead(temp);
             }
         }
     }

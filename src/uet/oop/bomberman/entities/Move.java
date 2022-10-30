@@ -77,6 +77,16 @@ public class Move {
                 animal.setCount(8);
                 checkRun(animal);
             }
+            if (animal instanceof Pass && can_down(animal)) {
+                animal.setDirection("down");
+                animal.setCount(8);
+                checkRun(animal);
+            }
+            if (animal instanceof Ovape && can_down(animal)) {
+                animal.setDirection("down");
+                animal.setCount(8);
+                checkRun(animal);
+            }
         }
     }
     private static void down_step(Animal animal) {
@@ -176,6 +186,39 @@ public class Move {
                 animal.setSwap(1);
             }
         }
+        // Ovape
+        if (animal instanceof Ovape) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.ovape_right1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.ovape_right2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.ovape_right3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.ovape_right2.getFxImage());
+                animal.setSwap(1);
+            }
+        }
+        // Pass
+        if (animal instanceof Pass) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.pass_right1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.pass_right2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.pass_right3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.pass_right2.getFxImage());
+                animal.setSwap(1);
+            }
+        }
+
     }
 
     public static void up(Animal animal) {
@@ -206,6 +249,16 @@ public class Move {
                 checkRun(animal);
             }
             if (animal instanceof Minvo && can_up(animal)) {
+                animal.setDirection("up");
+                animal.setCount(8);
+                checkRun(animal);
+            }
+            if (animal instanceof Pass && can_up(animal)) {
+                animal.setDirection("up");
+                animal.setCount(8);
+                checkRun(animal);
+            }
+            if (animal instanceof Ovape && can_up(animal)) {
                 animal.setDirection("up");
                 animal.setCount(8);
                 checkRun(animal);
@@ -308,6 +361,38 @@ public class Move {
                 animal.setSwap(1);
             }
         }
+        // Ovape
+        if (animal instanceof Ovape) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.ovape_left1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.ovape_left2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.ovape_left3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.ovape_left2.getFxImage());
+                animal.setSwap(1);
+            }
+        }
+        // Pass
+        if (animal instanceof Pass) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.pass_left1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.pass_left2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.pass_left3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.pass_left2.getFxImage());
+                animal.setSwap(1);
+            }
+        }
     }
 
     public static void left(Animal animal) {
@@ -338,6 +423,16 @@ public class Move {
                 checkRun(animal);
             }
             if (animal instanceof Minvo && can_left(animal)) {
+                animal.setDirection("left");
+                animal.setCount(8);
+                checkRun(animal);
+            }
+            if (animal instanceof Pass && can_left(animal)) {
+                animal.setDirection("left");
+                animal.setCount(8);
+                checkRun(animal);
+            }
+            if (animal instanceof Ovape && can_left(animal)) {
                 animal.setDirection("left");
                 animal.setCount(8);
                 checkRun(animal);
@@ -440,6 +535,38 @@ public class Move {
                 animal.setSwap(1);
             }
         }
+        // Pass
+        if (animal instanceof Pass) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.pass_right1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.pass_right2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.pass_right3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.pass_right1.getFxImage());
+                animal.setSwap(1);
+            }
+        }
+        // Ovape
+        if (animal instanceof Ovape) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.ovape_right1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.ovape_right2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.ovape_right3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.ovape_right1.getFxImage());
+                animal.setSwap(1);
+            }
+        }
 
     }
 
@@ -471,6 +598,16 @@ public class Move {
                 checkRun(animal);
             }
             if (animal instanceof Minvo && can_right(animal)) {
+                animal.setDirection("right");
+                animal.setCount(8);
+                checkRun(animal);
+            }
+            if (animal instanceof Pass && can_right(animal)) {
+                animal.setDirection("right");
+                animal.setCount(8);
+                checkRun(animal);
+            }
+            if (animal instanceof Ovape && can_right(animal)) {
                 animal.setDirection("right");
                 animal.setCount(8);
                 checkRun(animal);
@@ -573,6 +710,38 @@ public class Move {
                 animal.setSwap(1);
             }
         }
+        // Ovape
+        if (animal instanceof  Ovape) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.ovape_left1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.ovape_left2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.ovape_left3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.ovape_left2.getFxImage());
+                animal.setSwap(1);
+            }
+        }
+        // Pass
+        if (animal instanceof Pass) {
+            if (animal.getSwap() == 1) {
+                animal.setImg(Sprite.pass_left1.getFxImage());
+                animal.setSwap(2);
+            } else if (animal.getSwap() == 2) {
+                animal.setImg(Sprite.pass_left2.getFxImage());
+                animal.setSwap(3);
+            } else if (animal.getSwap() == 3) {
+                animal.setImg(Sprite.pass_left3.getFxImage());
+                animal.setSwap(4);
+            } else {
+                animal.setImg(Sprite.pass_left2.getFxImage());
+                animal.setSwap(1);
+            }
+        }
     }
 
     private static void setDirection(String direction, Animal animal, int isMove) {
@@ -619,6 +788,14 @@ public class Move {
             animal.setCount(animal.getCount() - 1);
         }
         if (animal instanceof Minvo && animal.getCount() > 0) {
+            setDirection(animal.getDirection(), animal, 4);
+            animal.setCount(animal.getCount() - 1);
+        }
+        if (animal instanceof Pass && animal.getCount() > 0) {
+            setDirection(animal.getDirection(), animal, 4);
+            animal.setCount(animal.getCount() - 1);
+        }
+        if (animal instanceof Ovape && animal.getCount() > 0) {
             setDirection(animal.getDirection(), animal, 4);
             animal.setCount(animal.getCount() - 1);
         }

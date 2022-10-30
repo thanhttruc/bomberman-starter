@@ -95,6 +95,8 @@ public class Sound extends JFrame{
                 next_level.open(audio_input);
                 FloatControl gainControl = (FloatControl) next_level.getControl(FloatControl.Type.MASTER_GAIN);
                 gainControl.setValue(-8.0f);
+                next_level.loop(0);
+
             }
 
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
